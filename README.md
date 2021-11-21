@@ -1,0 +1,1 @@
+# Szoveg-es-webbanyaszat

@@ -57,7 +57,10 @@ Elsőnek a 10 legszerepeltetettebb karaktert választottam ki, így a következ�
 | SGDClassifier   | 36% |
 
 Ahogy a táblázat is mutatja, alacsony pontossággal lehet csak megmondani, hogy ki mondta az adott sort. A problémát a confusion mátrix is jól mutatja:
+
+
 ![MNB](https://github.com/Rombeii/Szoveg-es-webbanyaszat/blob/main/images/MNB_conf.png)
+
 ![SGD](https://github.com/Rombeii/Szoveg-es-webbanyaszat/blob/main/images/SGD_conf.png)
 
 Érdekes lehet viszont azt vizsgálni, hogy melyik szereplőhöz melyik szót csatolja leginkább: [link](https://github.com/Rombeii/Szoveg-es-webbanyaszat/blob/main/most_important_words.txt)
@@ -80,9 +83,10 @@ Az eredményekből jól látszik, hogy ha van valamilyen kapcsolat a karakterek 
 | C. Montgomery Burns, Moe Szyslak, Seymour Skinner, Ned Flanders | 59,65%       | - |
 
 ### 2. kérdés elemzése:
-Annak a megválaszolására, hogy ki beszél a legjellegzetesebben a precision értéket választottam.
+Annak a megválaszolására, hogy ki beszél a legjellegzetesebben a precision értéket választottam, erre ugyanúgy külön optimalizáltam az osztályokat.
 
 A következő eredményeket kaptam:
 
 ![MNB](https://github.com/Rombeii/Szoveg-es-webbanyaszat/blob/main/images/MNB_prec.png)
+
 ![SGD](https://github.com/Rombeii/Szoveg-es-webbanyaszat/blob/main/images/SGD_prec.png)

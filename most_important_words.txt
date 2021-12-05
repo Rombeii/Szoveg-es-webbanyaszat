@@ -1,0 +1,60 @@
+Most important words for Bart Simpson
+	word: dad			coef: -4.6399248244893405
+	word: don			coef: -4.890987553800883
+	word: just			coef: -4.909273777624302
+	word: hey			coef: -4.956508059381152
+	word: ll			coef: -5.044949500967395
+Most important words for C. Montgomery Burns
+	word: smithers			coef: -5.075440304242723
+	word: oh			coef: -5.293797885240992
+	word: ll			coef: -5.505731296081591
+	word: ve			coef: -5.8010930552076
+	word: yes			coef: -5.883708820724192
+Most important words for Chief Wiggum
+	word: right			coef: -5.76752842827396
+	word: like			coef: -5.964034620059871
+	word: oh			coef: -5.975528999485606
+	word: just			coef: -5.987157037480725
+	word: ll			coef: -6.01082678156663
+Most important words for Grampa Simpson
+	word: ll			coef: -4.198633944810956
+	word: oh			coef: -4.346989069633352
+	word: son			coef: -4.583628741508094
+	word: got			coef: -4.590805805808457
+	word: right			coef: -4.816052407319446
+Most important words for Homer Simpson
+	word: oh			coef: -4.291404224170368
+	word: marge			coef: -4.482238266852804
+	word: ll			coef: -4.551564264734017
+	word: don			coef: -4.5971111705577785
+	word: just			coef: -4.627036183450634
+Most important words for Lisa Simpson
+	word: dad			coef: -4.373311982571432
+	word: bart			coef: -4.684650809987507
+	word: just			coef: -4.899683219376187
+	word: don			coef: -4.9169676002894285
+	word: mom			coef: -4.981257086436297
+Most important words for Marge Simpson
+	word: homer			coef: -4.370170691428528
+	word: don			coef: -4.558915848621262
+	word: oh			coef: -4.59284354374605
+	word: just			coef: -4.739570864615897
+	word: like			coef: -4.9716094454989745
+Most important words for Moe Szyslak
+	word: hey			coef: -5.288557095961244
+	word: uh			coef: -5.309666059171479
+	word: homer			coef: -5.336694731559398
+	word: yeah			coef: -5.422461553316824
+	word: oh			coef: -5.47769031126461
+Most important words for Ned Flanders
+	word: homer			coef: -5.4327847896062105
+	word: oh			coef: -5.508162925781834
+	word: just			coef: -5.721567577634177
+	word: like			coef: -5.937031442274159
+	word: ve			coef: -6.065113230131117
+Most important words for Seymour Skinner
+	word: bart			coef: -5.770623897634184
+	word: school			coef: -5.779552528378486
+	word: simpson			coef: -5.966368474760279
+	word: oh			coef: -5.988227268572778
+	word: ve			coef: -6.010574567264775

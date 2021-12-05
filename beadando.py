@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Nov  5 22:47:35 2018
-
-@author: MĂĄrton IspĂĄny
-
-Binary classification by two categories for 20newsgroups
-"""
 
 from urllib.request import urlopen;
 import numpy as np;
@@ -30,7 +23,7 @@ def optimizeNB(X_train, y_train, X_test, y_test, maximize = "accuracy"):
     best_alpha = None
     best_fit_prior = None
     overall_max = 0
-    for alpha in frange(0.5, 5.5, 0.01):
+    for alpha in frange(3.5, 7.5, 0.01):
         for fit_prior in [True, False]:
             clf_MNB = MultinomialNB(alpha=alpha, fit_prior = fit_prior);
             clf_MNB.fit(X_train,y_train);
@@ -58,7 +51,7 @@ def optimizeKNN(X_train, y_train, X_test, y_test, maximize = "accuracy"):
     overall_max = 0
     for n_neighbors in range(1, 16, 1):
         for weights in ["uniform", "distance"]:
-            for leaf_size in range(10, 50, 2):
+            for leaf_size in range(5, 15, 1):
                 clf_KNN = ng.KNeighborsClassifier(n_neighbors=n_neighbors, weights = weights,
                                                   leaf_size = leaf_size);
                 clf_KNN.fit(X_train,y_train);
@@ -85,14 +78,12 @@ def optimizeSgd(X_train, y_train, X_test, y_test, maximize = "accuracy"):
     best_loss = None
     best_penalty = None
     best_alpha = None
-    best_max_iter = None
     overall_max = 0
     for loss in ["hinge", "log", "modified_huber", "squared_hinge", "perceptron"]:
         for penalty in ["l1", "l2", "elasticnet"]:
             for alpha in frange(0.0001, 0.001, 0.0001):
-                for max_iter in range(5, 50, 5):
                     clf_SGD = SGDClassifier(loss=loss, penalty=penalty,alpha=alpha, 
-                                        random_state=2021, max_iter=max_iter, class_weight = "balanced");
+                                        random_state=2021, class_weight = "balanced", max_iter=5000);
                     clf_SGD.fit(X_train,y_train);
                     if (maximize == "accuracy"): 
                         curr_max = clf_SGD.score(X_test, y_test)
@@ -105,12 +96,11 @@ def optimizeSgd(X_train, y_train, X_test, y_test, maximize = "accuracy"):
                         best_loss = loss
                         best_penalty = penalty
                         best_alpha = alpha
-                        best_max_iter = max_iter
                         print("new best accuracy: " + str(curr_max))
-                        print("best_loss: " + str(best_loss) + " best_penalty: " + str(best_penalty) + " best_alpha: " + str(best_alpha) + " best_max_iter: " + str(best_max_iter) + "\n")
+                        print("best_loss: " + str(best_loss) + " best_penalty: " + str(best_penalty) + " best_alpha: " + str(best_alpha)  + "\n")
     
     return SGDClassifier(loss=best_loss, penalty=best_penalty,alpha=best_alpha, 
-                                        random_state=2021, max_iter=best_max_iter);
+                                        random_state=2021);
 
 def plot_metrics(metrics):
     metrics.pop("accuracy")
@@ -145,7 +135,7 @@ def show_most_informative_features(vectorizer, clf, n=5):
 #KONSTANSOK, ezek a paraméterek szabadon állíthatók
 
 #Előfeldolgozás konstansai
-MIN_WORD_COUNT = 3                  #Minimum milyen hosszú legyen a szöveg
+MIN_WORD_COUNT = 3                   #Minimum milyen hosszú legyen a szöveg
 NUM_OF_CHARACTERS = 10               #Hány karaktert vizsgálunk
 
 
@@ -163,11 +153,10 @@ KNN_LEAF_SIZE = 10
 
 
 #SGD konstansai
-SGD_DO_OPTIMIZE = False
+SGD_DO_OPTIMIZE = True
 SGD_LOSS = "modified_huber"
 SGD_PENALTY = "l2"
 SGD_ALPHA = 0.001
-SGD_MAX_ITER = 20
 
 
 #Vektorizálás konstansai
@@ -215,7 +204,7 @@ os =  SMOTE(sampling_strategy = "minority", random_state = 2021)
 X_train, y_train = os.fit_resample(X_train, y_train)
 
 #NB illesztése
-clf_MNB = optimizeNB(X_train, y_train, X_test, y_test, "precision") if NB_DO_OPTIMIZE else MultinomialNB(alpha=NB_ALPHA, fit_prior =  NB_FIT_PRIOR);
+clf_MNB = optimizeNB(X_train, y_train, X_test, y_test, "accuracy") if NB_DO_OPTIMIZE else MultinomialNB(alpha=NB_ALPHA, fit_prior =  NB_FIT_PRIOR);
 clf_MNB.fit(X_train,y_train)
 NB_train_accuracy = clf_MNB.score(X_train,y_train)
 NB_test_accuracy = clf_MNB.score(X_test,y_test)
@@ -231,7 +220,7 @@ show_most_informative_features(vectorizer, clf_MNB)
 
 
 #KNN illesztése
-#clf_KNN = optimizeKNN(X_train, y_train, X_test, y_test) if KNN_DO_OPTIMIZE else ng.KNeighborsClassifier(n_neighbors=KNN_NUMBER_OF_NEIGHBOURS,
+#clf_KNN = optimizeKNN(X_train, y_train, X_test, y_test, "accuracy") if KNN_DO_OPTIMIZE else ng.KNeighborsClassifier(n_neighbors=KNN_NUMBER_OF_NEIGHBOURS,
 #                                                                                                        weights = KNN_WEIGHTS, leaf_size = KNN_LEAF_SIZE);
 #clf_KNN.fit(X_train,y_train);
 #ds_train_pred = clf_KNN.predict(X_train)
@@ -248,8 +237,8 @@ show_most_informative_features(vectorizer, clf_MNB)
 
 
 #SGD illesztése
-clf_SGD = optimizeSgd(X_train, y_train, X_test, y_test) if SGD_DO_OPTIMIZE else SGDClassifier(loss=SGD_LOSS, penalty=SGD_PENALTY, alpha=SGD_ALPHA, 
-                                                                                              random_state=2021, max_iter=SGD_MAX_ITER);
+clf_SGD = optimizeSgd(X_train, y_train, X_test, y_test, "accuracy") if SGD_DO_OPTIMIZE else SGDClassifier(loss=SGD_LOSS, penalty=SGD_PENALTY, alpha=SGD_ALPHA, 
+                                                                                              random_state=2021, max_iter = 5000);
 clf_SGD.fit(X_train,y_train);   
 ds_train_pred = clf_SGD.predict(X_train);
 SGD_train_accuracy = clf_SGD.score(X_train, y_train)

@@ -23,7 +23,7 @@ def optimizeNB(X_train, y_train, X_test, y_test, maximize = "accuracy"):
     best_alpha = None
     best_fit_prior = None
     overall_max = 0
-    for alpha in frange(3.5, 7.5, 0.01):
+    for alpha in frange(0.5, 7.5, 0.01):
         for fit_prior in [True, False]:
             clf_MNB = MultinomialNB(alpha=alpha, fit_prior = fit_prior);
             clf_MNB.fit(X_train,y_train);
@@ -123,7 +123,7 @@ def getPrecisionSum(metrics):
     
 def show_most_informative_features(vectorizer, clf, n=5):
     feature_names = vectorizer.get_feature_names()
-    for i in range(0, len(clf.classes_)):   
+    for i in range(0, len(clf.classes_)):
         coefs_with_fns = sorted(zip(clf.coef_[i], feature_names))
         top = coefs_with_fns[:-(n + 1):-1]
         print("Most important words for " + clf.classes_[i])
@@ -137,11 +137,13 @@ def show_most_informative_features(vectorizer, clf, n=5):
 #Előfeldolgozás konstansai
 MIN_WORD_COUNT = 3                   #Minimum milyen hosszú legyen a szöveg
 NUM_OF_CHARACTERS = 10               #Hány karaktert vizsgálunk
+#CHARS = ["Homer Simpson", "Marge Simpson", "C. Montgomery Burns"]
+CHARS = []
 
 
 #NB konstansai
 NB_DO_OPTIMIZE = False
-NB_ALPHA = 5.05;
+NB_ALPHA = 5.5
 NB_FIT_PRIOR = True
 
 
@@ -153,7 +155,7 @@ KNN_LEAF_SIZE = 10
 
 
 #SGD konstansai
-SGD_DO_OPTIMIZE = True
+SGD_DO_OPTIMIZE = False
 SGD_LOSS = "modified_huber"
 SGD_PENALTY = "l2"
 SGD_ALPHA = 0.001
@@ -175,8 +177,12 @@ unique, counts = np.unique(df[:,0], return_counts=True)
 dict_with_count = dict(zip(unique, counts))
 sorted_elements = sorted(dict_with_count.items(), key=itemgetter(1), reverse=True)
 #Top NUM_OF_CHARACTERS kiválasztása
-top = np.array({x[0] for x in sorted_elements[:NUM_OF_CHARACTERS]})
-df = np.array([x for x in df if x[0] in top.tolist()])
+if (len(CHARS) == 0) :
+    CHARS = np.array({x[0] for x in sorted_elements[:NUM_OF_CHARACTERS]})
+    df = np.array([x for x in df if x[0] in CHARS.tolist()])
+else:
+    df = np.array([x for x in df if x[0] in CHARS])
+
 #Felesleges whitespacek törlése a szöveg elejéről és végéről
 df = np.char.strip(df.astype(str))
 #Rövidebb, mint MIN_WORD_COUNT szövegek törlése
@@ -220,20 +226,20 @@ show_most_informative_features(vectorizer, clf_MNB)
 
 
 #KNN illesztése
-#clf_KNN = optimizeKNN(X_train, y_train, X_test, y_test, "accuracy") if KNN_DO_OPTIMIZE else ng.KNeighborsClassifier(n_neighbors=KNN_NUMBER_OF_NEIGHBOURS,
-#                                                                                                        weights = KNN_WEIGHTS, leaf_size = KNN_LEAF_SIZE);
-#clf_KNN.fit(X_train,y_train);
-#ds_train_pred = clf_KNN.predict(X_train)
-#KNN_train_accuracy = clf_KNN.score(X_train, y_train)
-#KNN_test_accuracy = clf_KNN.score(X_test, y_test)
+clf_KNN = optimizeKNN(X_train, y_train, X_test, y_test, "accuracy") if KNN_DO_OPTIMIZE else ng.KNeighborsClassifier(n_neighbors=KNN_NUMBER_OF_NEIGHBOURS,
+                                                                                                        weights = KNN_WEIGHTS, leaf_size = KNN_LEAF_SIZE);
+clf_KNN.fit(X_train,y_train);
+ds_train_pred = clf_KNN.predict(X_train)
+KNN_train_accuracy = clf_KNN.score(X_train, y_train)
+KNN_test_accuracy = clf_KNN.score(X_test, y_test)
 
-#y_train_pred = clf_KNN.predict(X_train)
-#KNN_cm_train = confusion_matrix(y_train, y_train_pred)
-#y_test_pred = clf_KNN.predict(X_test)
-#KNN_cm_test = confusion_matrix(y_test, y_test_pred)
-#print(metrics.classification_report(y_test, y_test_pred))
-#KNN_metrics = metrics.classification_report(y_test, y_test_pred, output_dict = True)
-#plot_metrics(KNN_metrics)
+y_train_pred = clf_KNN.predict(X_train)
+KNN_cm_train = confusion_matrix(y_train, y_train_pred)
+y_test_pred = clf_KNN.predict(X_test)
+KNN_cm_test = confusion_matrix(y_test, y_test_pred)
+print(metrics.classification_report(y_test, y_test_pred))
+KNN_metrics = metrics.classification_report(y_test, y_test_pred, output_dict = True)
+plot_metrics(KNN_metrics)
 
 
 #SGD illesztése
